@@ -57,24 +57,34 @@ Linear Algebra Functions Implemented in Numpy
 - multiplyR(data): multiply() but with the matrices in reverse order
 
 ## Reduced Row Echelon Form
-- rref(a, option): applies the Reduced Row Echelon Form to a matrix
+- rref(a, option): applies the Reduced Row Echelon Form to a matrix (many notebooks)
   - option = 'Verbose': print intermediate steps in function
   - option = 'Silent': don't print anything, return pivot columns
   - option = 'Short': don't run second part of function, return whether number of flips is odd (needed for determinent)
 - augment(a, b): concatenate a and b
-- rrefAugmented(a, b, option): rref(augment(a, b), option)
-- rrefIdentity(a, option): rrefAugmented(a, np.identity(len(a)), option)
-- pivots(a): Get pivot values from rref(), don't run second part of function
+- rrefAugmented(a, b, option): rref(augment(a, b), option) (notebook 1_12, 1_13)
+- rrefIdentity(a, option): rrefAugmented(a, np.identity(len(a)), option) (notebook 1_10, 1_12, 2_1, 2_6)
+- pivots(a): Get pivot values from rref(), don't run second part of function (notebook 3_3)
 
-## Subspaces
+## Subspaces (notebook 4_Exam)
 - columnSpace(a): return the columnspace of a matrix
 - rowSpace(a): return the rowspace of a matrix
 - nullSpace(a): return the nullpace of a matrix
 - leftNullSpace(a): return the left nullspace of a matrix
 
 ## Determinent
-- det(a): return the determiant of a matrix
-- crossProduct(a): return the cross product of a matrix
+- det(a): return the determiant of a matrix (many notebooks)
+- crossProduct(a): return the cross product of a matrix (notebook 1_9)
 
 ## Inverse
 - inverse(a): return the inverse of a matrix
+- cofactor(a): return the cofactors of a matrix (notebook 2_7, 2_12, 4_Exam)
+- inverse2: return the inverse of a matrix using cofactors 
+- leftI(a): return the left inverse of a matrix (notebook 3_8)
+- rightI(a): return the right inverse of a matrix (notebook 3_8)
+- pseudoI(a): return the psuedo inverxe of a matrix
+
+## Projection
+- projection(a): return the projection of a matrix (notebook 2_2, 2_3, 3_9)
+- normalise(a): return a normalised matrix (notebook 3_7)
+- gram(a): use gram-schmidt process to make matrix orthonormal (notebook 2_4)
