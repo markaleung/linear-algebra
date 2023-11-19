@@ -88,3 +88,22 @@ Linear Algebra Functions Implemented in Numpy
 - projection(a): return the projection of a matrix (notebook 2_2, 2_3, 3_9)
 - normalise(a): return a normalised matrix (notebook 3_7)
 - gram(a): use gram-schmidt process to make matrix orthonormal (notebook 2_4)
+
+## Eigenvector
+- eigen2x2(a): get eigenvalues of a matrix (2x2 matrix only, many notebooks)
+- eigenVectors(a, eigenValues): get eigen vectors of a matrix using given eigen values
+- diagonal(eigenValues, power = 1, dimensions = None, func = lambda l, power: l ** power): 
+  - Create a diagonal matrix for a given list of eigenvalues
+  - Values are 0 except diagonals
+  - each ith diagonal value is func(eigenvalue[i], power)
+  - Many notebooks
+- diagonalExp(e, p, d): used with aku0
+- aku0(a, eigenValues, dFunc, u0, k): Difference equation u(k+1) = Au(k) for matrix a, eigenvalues, diagonal function dFunc, initial vector u0, power k
+
+## Other functions
+- svd(a): return singular value decomposition of a matrix (maximum 2x2)
+- fft(n): return fft of an integer
+
+## Conversion functions
+- toMatrix(a): convert latex matrix to numpy
+- toTex(a): convert numpy matrix to latex
