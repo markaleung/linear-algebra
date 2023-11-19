@@ -1,7 +1,7 @@
 import numpy as np, pandas as pd, re
 # Helper Methods
 def separate(filename, sheet, size):
-	df = pd.read_excel(filename, sheetname = sheet, header=None).astype(float)
+	df = pd.read_excel(filename, sheet_name = sheet, header=None).astype(float)
 	return [np.matrix(df[i:i+size]) for i in range(0, len(df), size)]
 def test():
 	a = np.matrix([
