@@ -53,8 +53,8 @@ Linear Algebra Functions Implemented in Numpy
 # List of functions
 
 ## Helper methods
-- multiply(data, func): applies matrix multiplication across an array of numpy matrices
-- multiplyR(data): multiply() but with the matrices in reverse order
+- multiply(data, func): applies matrix multiplication across an array of numpy matrices (notebook 1_2, 1_Exam)
+- multiplyR(data): multiply() but with the matrices in reverse order (notebook 2_11, 3_8)
 
 ## Reduced Row Echelon Form
 - rref(a, option): applies the Reduced Row Echelon Form to a matrix (many notebooks)
@@ -69,11 +69,12 @@ Linear Algebra Functions Implemented in Numpy
 ## Subspaces (notebook 4_Exam)
 - columnSpace(a): return the columnspace of a matrix
 - rowSpace(a): return the rowspace of a matrix
-- nullSpace(a): return the nullpace of a matrix
-- leftNullSpace(a): return the left nullspace of a matrix
+- nullSpace(a): return the nullpace of a matrix (notebook 3_8)
+- leftNullSpace(a): return the left nullspace of a matrix (notebook 3_9)
 
 ## Determinent
 - det(a): return the determiant of a matrix (many notebooks)
+- det2(a): return the determinant using alternative method (2x2 matrix only, notebook 2_6)
 - crossProduct(a): return the cross product of a matrix (notebook 1_9)
 
 ## Inverse
@@ -82,7 +83,7 @@ Linear Algebra Functions Implemented in Numpy
 - inverse2: return the inverse of a matrix using cofactors 
 - leftI(a): return the left inverse of a matrix (notebook 3_8)
 - rightI(a): return the right inverse of a matrix (notebook 3_8)
-- pseudoI(a): return the psuedo inverxe of a matrix
+- pseudoI(a): return the psuedo inverxe of a matrix (notebook 3_8)
 
 ## Projection
 - projection(a): return the projection of a matrix (notebook 2_2, 2_3, 3_9)
@@ -97,8 +98,11 @@ Linear Algebra Functions Implemented in Numpy
   - Values are 0 except diagonals
   - each ith diagonal value is func(eigenvalue[i], power)
   - Many notebooks
-- diagonalExp(e, p, d): used with aku0
-- aku0(a, eigenValues, dFunc, u0, k): Difference equation u(k+1) = Au(k) for matrix a, eigenvalues, diagonal function dFunc, initial vector u0, power k
+- diagonalExp(e, p, d): return exponential diagonal matrix (notebook 2_10, 3_Exam)
+- aku0(a, eigenValues, dFunc, u0, k): 
+  - Difference equation u(k+1) = Au(k) 
+  - For matrix a, eigenvalues, diagonal function dFunc, initial vector u0, power k
+  - notebooks 2_9, 2_10, 2_11, 3_Exam
 
 ## Other functions
 - svd(a): return singular value decomposition of a matrix (maximum 2x2)
