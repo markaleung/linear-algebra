@@ -113,27 +113,29 @@ Linear Algebra Functions Implemented in Numpy
 - toTex(a): convert numpy matrix to latex
 
 # Function Tree
+- I included the function tree for RREF, because it's the most complicated class in the program
 
 ## RREF
-- bottom_half()
+- find_pivots_and_subtract_bottom_half()
 	- append_and_print_matrix()
 	- for self.row_number in range(0, min(self.matrix.shape)):
 		- while self.pivot_found == False and self.column_number < self.matrix.shape[1]:
 			- for self.row_number2 in range(self.row_number, len(self.matrix)):
 				- if np.absolute(self.matrix[self.row_number2, self.column_number]) > 1e-8:
 					- flip_rows()
-					- append column
+					- append column_number
 					- for self.destination_row in range(self.row_number+1, len(self.matrix)):
-						- subtract_row()
+						- subtract_pivot_row()
 					- append_and_print_matrix()
 					- break
 			- move to next column
-- top_half()
-	- for self.row_number, self.column_number in reversed(list(enumerate(self.pivot_columns))):
-		- for self.destination_row in range(0, self.row_number):
-			- subtract_row()
-		- append_and_print_matrix()
+- divide_by_pivots()
 	- for self.row_number, self.column_number in enumerate(self.pivot_columns):
 		- divide row by pivot value
 	- append_and_print_matrix()
+- subtract_top_half()
+	- for self.row_number, self.column_number in reversed(list(enumerate(self.pivot_columns))):
+		- for self.destination_row in range(0, self.row_number):
+			- subtract_pivot_row()
+		- append_and_print_matrix()
 - make_output()

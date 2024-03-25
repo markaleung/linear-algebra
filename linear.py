@@ -99,30 +99,30 @@ class RREF:
 			self.print(self.matrix)
 			self.matrices.append(self.matrix.copy())
 	def flip_rows(self):
-		# Count whether number of flips is odd
+		# Odd/even # of flips -> negative/positive. Used by determinant
 		self.flip_sign = - self.flip_sign
 		self.row_temp = self.matrix[self.row_number,:].copy()
 		self.matrix[self.row_number,:] = self.matrix[self.row_number2,:].copy()
 		self.matrix[self.row_number2,:] = self.row_temp.copy()
-	def subtract_row(self):
+	def subtract_pivot_row(self):
 		self.pivot_value = self.matrix[self.row_number, self.column_number]
 		self.destination_value = self.matrix[self.destination_row, self.column_number]
 		self.multiplier = self.destination_value / self.pivot_value
-		self.multiplied_source_row = self.matrix[self.row_number, :] * self.multiplier
+		self.pivot_row = self.matrix[self.row_number, :]
+		self.multiplied_pivot_row = self.pivot_row * self.multiplier
 		if self.pivot_value != 0:
 			# Not sure why round is needed in new version but not old version
-			self.matrix[self.destination_row, :] = self.matrix[self.destination_row, :] - self.multiplied_source_row.round(10)
+			self.matrix[self.destination_row, :] = self.matrix[self.destination_row, :] - self.multiplied_pivot_row.round(10)
 	def handle_pivot(self):
-		# If loop has moved to later row, flip source2 row and source row
+		# If loop has moved to later row, flip row_number and row_number2
 		if self.row_number != self.row_number2:
 			self.flip_rows()
-		# Pivot is found. Append pivot, and subtract pivot row from other rows
 		self.pivot_found = True
 		self.pivot_columns.append(self.column_number)
 		for self.destination_row in range(self.row_number+1, len(self.matrix)):
-			self.subtract_row()
+			self.subtract_pivot_row()
 		self.append_and_print_matrix()
-	def bottom_half(self):
+	def find_pivots_and_subtract_bottom_half(self):
 		self.print('Bottom half')
 		self.append_and_print_matrix()
 		# Loop through smaller dimension of matrix
@@ -151,25 +151,22 @@ class RREF:
 		# Subtract from top row to source row for each pivot. Bottom up
 		for self.row_number, self.column_number in reversed(list(enumerate(self.pivot_columns))):
 			for self.destination_row in range(0, self.row_number):
-				self.subtract_row()
+				self.subtract_pivot_row()
 			self.append_and_print_matrix()
-	def make_output(self):
-		if self.option == 'Verbose':
-			self.output = self.matrices
-		elif self.option == 'Silent':
-			self.output = self.matrices[-1], self.pivot_columns
-		elif self.option == 'Short':
-			self.output = self.matrices[-1], self.flip_sign, self.pivot_columns
 	def main(self):
-		self.bottom_half()
+		self.find_pivots_and_subtract_bottom_half()
 		if self.option in ('Verbose', 'Silent'):
 			self.divide_by_pivots()
 			self.subtract_top_half()
-		self.make_output()
-		return self.output
 def rref(a, option = 'Verbose'):
 	rref_ = RREF(matrix_input = a, option = option)
-	return rref_.main()
+	rref_.main()
+	if option == 'Verbose':
+		return rref_.matrices
+	if option == 'Silent':
+		return rref_.matrices[-1], rref_.pivot_columns
+	if option == 'Short':
+		return rref_.matrices[-1], rref_.flip_sign, rref_.pivot_columns
 augment = lambda a, b: np.concatenate((a, b), axis=1)
 rrefAugmented = lambda a, b, option = 'Verbose' : rref(augment(a, b), option)
 rrefIdentity = lambda a, option = 'Verbose' : rrefAugmented(a, np.identity(len(a)), option)
