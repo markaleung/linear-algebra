@@ -22,7 +22,7 @@ def multiply(data, func = lambda array, output: array @ output):
 	return output
 multiplyR = lambda data: multiply(data, lambda array, output: output @ array)
 # RREF Related Methods
-def rref(a, option='Verbose'):
+def rref(a, option = 'Verbose'):
 	def print2(input):
 		if option == 'Verbose':
 			print(input)
@@ -81,6 +81,93 @@ def rref(a, option='Verbose'):
 		return output[-1], pivots
 	elif option == 'Short':
 		return output[-1], flip, pivots
+class RREF:
+	def __init__(self, matrix_input, option = 'Verbose'):
+		self.matrix_input = matrix_input
+		self.option = option
+		self.matrices, self.pivot_columns, self.column_number, self.flip_sign = [], [], 0, 1
+		self.matrix = self.matrix_input.astype(float) if 'int' in str(self.matrix_input.dtype) else self.matrix_input.copy()
+	def print(self, input_):
+		if self.option == 'Verbose':
+			print(input_)
+	def append_and_print_matrix(self):
+		if len(self.matrices) == 0 or (
+			len(self.matrices) > 0 and 
+			# Matrix is different from last appended matrix
+			not np.array_equal(self.matrix, self.matrices[-1])
+		):
+			self.print(self.matrix)
+			self.matrices.append(self.matrix.copy())
+	def flip_rows(self):
+		# Count whether number of flips is odd
+		self.flip_sign = - self.flip_sign
+		self.row_temp = self.matrix[self.row_number,:].copy()
+		self.matrix[self.row_number,:] = self.matrix[self.row_number2,:].copy()
+		self.matrix[self.row_number2,:] = self.row_temp.copy()
+	def subtract_row(self):
+		self.pivot_value = self.matrix[self.row_number, self.column_number]
+		self.destination_value = self.matrix[self.destination_row, self.column_number]
+		self.multiplier = self.destination_value / self.pivot_value
+		self.multiplied_source_row = self.matrix[self.row_number, :] * self.multiplier
+		if self.pivot_value != 0:
+			# Not sure why round is needed in new version but not old version
+			self.matrix[self.destination_row, :] = self.matrix[self.destination_row, :] - self.multiplied_source_row.round(10)
+	def handle_pivot(self):
+		# If loop has moved to later row, flip source2 row and source row
+		if self.row_number != self.row_number2:
+			self.flip_rows()
+		# Pivot is found. Append pivot, and subtract pivot row from other rows
+		self.pivot_found = True
+		self.pivot_columns.append(self.column_number)
+		for self.destination_row in range(self.row_number+1, len(self.matrix)):
+			self.subtract_row()
+		self.append_and_print_matrix()
+	def bottom_half(self):
+		self.print('Bottom half')
+		self.append_and_print_matrix()
+		# Loop through smaller dimension of matrix
+		for self.row_number in range(0, min(self.matrix.shape)):
+			self.pivot_found = False
+			# Stop if pivot is found or you run out of columns
+			while self.pivot_found == False and self.column_number < self.matrix.shape[1]:
+				# Go from source row to last row of matrix
+				for self.row_number2 in range(self.row_number, len(self.matrix)):
+					# If source2 row and pivot column is nonzero
+					if np.absolute(self.matrix[self.row_number2, self.column_number]) > 1e-8:
+						self.handle_pivot()
+						break
+				# Move next column, even if pivot is not found
+				self.column_number += 1
+	def top_half(self):
+		print('Top half')
+		# Subtract from top row to source row for each pivot. Bottom up
+		for self.row_number, self.column_number in reversed(list(enumerate(self.pivot_columns))):
+			for self.destination_row in range(0, self.row_number):
+				self.subtract_row()
+			self.append_and_print_matrix()
+		# Divide pivot rows by pivot value to make all pivots 1
+		for self.row_number, self.column_number in enumerate(self.pivot_columns):
+			self.pivot_value = self.matrix[self.row_number, self.column_number]
+			if self.pivot_value != 0:
+				self.matrix[self.row_number,:] = self.matrix[self.row_number,:] / self.pivot_value
+		self.print('Divide')
+		self.append_and_print_matrix()
+	def make_output(self):
+		if self.option == 'Verbose':
+			self.output = self.matrices
+		elif self.option == 'Silent':
+			self.output = self.matrices[-1], self.pivot_columns
+		elif self.option == 'Short':
+			self.output = self.matrices[-1], self.flip_sign, self.pivot_columns
+	def main(self):
+		self.bottom_half()
+		if self.option in ('Verbose', 'Silent'):
+			self.top_half()
+		self.make_output()
+		return self.output
+def rref(a, option = 'Verbose'):
+	rref_ = RREF(matrix_input = a, option = option)
+	return rref_.main()
 augment = lambda a, b: np.concatenate((a, b), axis=1)
 rrefAugmented = lambda a, b, option = 'Verbose' : rref(augment(a, b), option)
 rrefIdentity = lambda a, option = 'Verbose' : rrefAugmented(a, np.identity(len(a)), option)
