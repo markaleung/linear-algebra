@@ -66,15 +66,15 @@ def rref(a, option = 'Verbose'):
 			# Move pivot to next column
 			pivot += 1
 	if option in ('Verbose', 'Silent'):
-		print('Top Half')
-		# Subtract from top row to source row for each pivot. Bottom up
-		for source, pivot in reversed(list(enumerate(pivots))):
-			subtract(0, source)
 		# Divide pivot rows by pivot value to make all pivots 1
 		for source, pivot in enumerate(pivots):
 			if u[source,pivot] != 0:
 				u[source,:] = u[source,:] / u[source,pivot]
 		print3('Divide')
+		print2('Top Half')
+		# Subtract from top row to source row for each pivot. Bottom up
+		for source, pivot in reversed(list(enumerate(pivots))):
+			subtract(0, source)
 	if option == 'Verbose':
 		return output
 	elif option == 'Silent':
@@ -138,20 +138,21 @@ class RREF:
 						break
 				# Move next column, even if pivot is not found
 				self.column_number += 1
-	def top_half(self):
-		print('Top half')
-		# Subtract from top row to source row for each pivot. Bottom up
-		for self.row_number, self.column_number in reversed(list(enumerate(self.pivot_columns))):
-			for self.destination_row in range(0, self.row_number):
-				self.subtract_row()
-			self.append_and_print_matrix()
+	def divide_by_pivots(self):
+		self.print('Divide')
 		# Divide pivot rows by pivot value to make all pivots 1
 		for self.row_number, self.column_number in enumerate(self.pivot_columns):
 			self.pivot_value = self.matrix[self.row_number, self.column_number]
 			if self.pivot_value != 0:
 				self.matrix[self.row_number,:] = self.matrix[self.row_number,:] / self.pivot_value
-		self.print('Divide')
 		self.append_and_print_matrix()
+	def subtract_top_half(self):
+		self.print('Top half')
+		# Subtract from top row to source row for each pivot. Bottom up
+		for self.row_number, self.column_number in reversed(list(enumerate(self.pivot_columns))):
+			for self.destination_row in range(0, self.row_number):
+				self.subtract_row()
+			self.append_and_print_matrix()
 	def make_output(self):
 		if self.option == 'Verbose':
 			self.output = self.matrices
@@ -162,7 +163,8 @@ class RREF:
 	def main(self):
 		self.bottom_half()
 		if self.option in ('Verbose', 'Silent'):
-			self.top_half()
+			self.divide_by_pivots()
+			self.subtract_top_half()
 		self.make_output()
 		return self.output
 def rref(a, option = 'Verbose'):
