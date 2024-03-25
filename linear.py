@@ -125,18 +125,17 @@ class RREF:
 	def find_pivots_and_subtract_bottom_half(self):
 		self.print('Bottom half')
 		self.append_and_print_matrix()
-		# Loop through smaller dimension of matrix
+		# Number of pivots <= smaller dimension of matrix
 		for self.row_number in range(0, min(self.matrix.shape)):
 			self.pivot_found = False
-			# Stop if pivot is found or you run out of columns
+			# If you run out of columns, pivot will not be appended
 			while self.pivot_found == False and self.column_number < self.matrix.shape[1]:
-				# Go from source row to last row of matrix
+				# If you run out of rows, pivot will not be appended
 				for self.row_number2 in range(self.row_number, len(self.matrix)):
-					# If source2 row and pivot column is nonzero
+					# Non-zero means pivot
 					if np.absolute(self.matrix[self.row_number2, self.column_number]) > 1e-8:
 						self.handle_pivot()
 						break
-				# Move next column, even if pivot is not found
 				self.column_number += 1
 	def divide_by_pivots(self):
 		self.print('Divide')

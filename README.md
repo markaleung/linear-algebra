@@ -138,4 +138,3 @@ Linear Algebra Functions Implemented in Numpy
 		- for self.destination_row in range(0, self.row_number):
 			- subtract_pivot_row()
 		- append_and_print_matrix()
-- make_output()
